@@ -74,3 +74,7 @@ func createArticle(c *gin.Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
 }
+
+//--TODO--
+//func updateArticle
+//func deleteArticle
