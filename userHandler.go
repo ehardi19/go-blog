@@ -10,7 +10,6 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-
 )
 
 func isUserValid(username, password string) bool {
@@ -18,7 +17,6 @@ func isUserValid(username, password string) bool {
 	result := db.QueryRow("SELECT password FROM user WHERE username=$1", u.Password)
 
 	tmp := &u
-
 	err := result.Scan(&tmp.Password)
 	if err != nil {
 		if err == sql.ErrNoRows {
@@ -47,7 +45,7 @@ func registerNewUser(username, password string) (*user, error) {
 }
 
 func isUsernameAvailable(username string) bool {
-	stmt := `SELECT username FROM user WHERE username = ?`
+	stmt := "SELECT username FROM user WHERE username = ?"
 	err := db.QueryRow(stmt, username).Scan(&username)
 	if err != nil {
 		if err != sql.ErrNoRows {
@@ -108,7 +106,7 @@ func register(c *gin.Context) {
 	if _, err := registerNewUser(username, password); err == nil {
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), 8)
 
-		_, err = db.Query("INSERT INTO users VALUES ($1, $2)", u.Username, string(hashedPassword));
+		_, err = db.Query("INSERT INTO users VALUES ($1, $2)", u.Username, string(hashedPassword))
 		if err != nil {
 			panic(err)
 		}
