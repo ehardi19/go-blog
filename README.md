@@ -9,11 +9,18 @@ This project can:
 - [ ] Edit article (ASAP)
 - [ ] Delete article (ASAP)
 
+_Please notes this project has many things to improve especially working with database that i need to fix it soon_
+
 ## Usage
+- Clone this repository
+- Getting packages working
 ```sh
 $ go get github.com/gin-gonic/gin
 $ go get github.com/lib/pq
 $ go get golang.org/x/crypto/bcrypt
+```
+- Running this project
+```sh
 $ go build -o app
 $ ./app
 ```
