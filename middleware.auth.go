@@ -1,5 +1,3 @@
-// middleware.auth.go
-
 package main
 
 import (

@@ -1,22 +1,22 @@
-// main.go
-
 package main
 
 import (
-	"net/http"
-
+	"database/sql"
 	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq"
+	"net/http"
 )
 
 var router *gin.Engine
+var db *sql.DB
 
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
 	router = gin.Default()
-
 	router.LoadHTMLGlob("templates/*")
 
+	initDB()
 	initializeRoutes()
 
 	router.Run()
@@ -28,13 +28,18 @@ func render(c *gin.Context, data gin.H, templateName string) {
 
 	switch c.Request.Header.Get("Accept") {
 	case "application/json":
-		// Respond with JSON
 		c.JSON(http.StatusOK, data["payload"])
 	case "application/xml":
-		// Respond with XML
 		c.XML(http.StatusOK, data["payload"])
 	default:
-		// Respond with HTML
 		c.HTML(http.StatusOK, templateName, data)
+	}
+}
+
+func initDB(){
+	var err error
+	db, err = sql.Open("postgres", "dbname=mydb sslmode=disable")
+	if err != nil {
+		panic(err)
 	}
 }

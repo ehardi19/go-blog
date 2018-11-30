@@ -1,5 +1,3 @@
-// routes.go
-
 package main
 
 func initializeRoutes() {
