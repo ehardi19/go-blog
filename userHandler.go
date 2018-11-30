@@ -14,7 +14,7 @@ import (
 
 func isUserValid(username, password string) bool {
 	u := user{Username: username, Password: password}
-	result := db.QueryRow("SELECT password FROM user WHERE username=$1", u.Password)
+	result := db.QueryRow("SELECT password FROM userTable WHERE username=$1", u.Password)
 
 	tmp := &u
 	err := result.Scan(&tmp.Password)
@@ -45,7 +45,7 @@ func registerNewUser(username, password string) (*user, error) {
 }
 
 func isUsernameAvailable(username string) bool {
-	stmt := "SELECT username FROM user WHERE username = ?"
+	stmt := "SELECT username FROM userTable WHERE username = ?"
 	err := db.QueryRow(stmt, username).Scan(&username)
 	if err != nil {
 		if err != sql.ErrNoRows {
@@ -106,7 +106,7 @@ func register(c *gin.Context) {
 	if _, err := registerNewUser(username, password); err == nil {
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), 8)
 
-		_, err = db.Query("INSERT INTO users VALUES ($1, $2)", u.Username, string(hashedPassword))
+		_, err = db.Query("INSERT INTO userTable VALUES ($1, $2)", u.Username, string(hashedPassword))
 		if err != nil {
 			panic(err)
 		}

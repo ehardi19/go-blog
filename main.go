@@ -2,9 +2,16 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	"net/http"
+)
+
+const (
+	DB_USER     = "postgres"
+	DB_PASSWORD = "postgres"
+	DB_NAME     = "test"
 )
 
 var router *gin.Engine
@@ -37,9 +44,10 @@ func render(c *gin.Context, data gin.H, templateName string) {
 }
 
 func initDB(){
-	var err error
-	db, err = sql.Open("postgres", "dbname=mydb sslmode=disable")
+	dbinfo := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", DB_USER, DB_PASSWORD, DB_NAME)
+	db, err := sql.Open("postgres", dbinfo)
 	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 }
